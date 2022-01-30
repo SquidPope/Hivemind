@@ -10,9 +10,19 @@ public class AttackBee : Bee
     float timer = 0f;
     float timerMax = 2f;
 
-    void Start()
+    public override void Init(int id)
     {
+        this.id = id;
+        type = BeeType.Attack;
+        description = "Attack bees can fire projectiles at opponents and obstacles.";
         timer = timerMax;
+    }
+
+    public override void ChangeFuelLevel(int amount)
+    {
+        base.ChangeFuelLevel(amount);
+
+        isFueled = fuelLevel >= 5; //This and the disruptor bee need a lot of fuel to get started.
     }
 
     protected override void Update()

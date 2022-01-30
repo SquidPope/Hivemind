@@ -1,38 +1,60 @@
 using UnityEngine;
 
-public class Bee : MonoBehaviour
+public abstract class Bee : MonoBehaviour
 {
     // Base class for a robobee
-    protected float fuelLevel;
-    protected float fuelLevelMax;
+    [SerializeField] protected int fuelLevelMax;
+
+    protected int id;
+    protected BeeType type = BeeType.Storage;
+    protected int fuelLevel;
     protected bool isFueled;
+
+    protected static string description = "Storage bees allow you to carry more total fuel.";
 
     //public float speed = 5f;
     //public float magnitude = 2f;
 
-    public virtual void ChangeFuelLevel(float amount)
+    public abstract void Init(int id);
+
+    public int Id
     {
-        if (amount > 0f && fuelLevel < fuelLevelMax)
+        get { return id; }
+        set { id = value; } //Should only happen once when we're created.
+    }
+
+    public BeeType GetBeeType() { return type; }
+
+    public bool IsFueled() { return isFueled; }
+    public int GetFuelMax() { return fuelLevelMax; }
+    public int GetFuelCurrent() { return fuelLevel; }
+
+    public virtual void ChangeFuelLevel(int amount)
+    {
+        if (amount > 0 && fuelLevel < fuelLevelMax)
         {
             fuelLevel += amount;
 
             if (fuelLevel > fuelLevelMax)
                 fuelLevel = fuelLevelMax; //ToDo: let the fuel manager thing know we went over, and by how much?
         }
-        else if (amount < 0f && fuelLevel > 0f)
+        else if (amount < 0 && fuelLevel > 0)
         {
             fuelLevel += amount; //ToDo: make this cleaner
 
-            if (fuelLevel < 0f)
-                fuelLevel = 0f;
+            if (fuelLevel < 0)
+                fuelLevel = 0;
         }
 
-        isFueled = fuelLevel > 0f;
+        isFueled = fuelLevel > 0;
     }
 
     //in update rotate around parent pos?
-    protected virtual void Update() //ToDo: If we get knocked away from the swarm center, move back towards it - define a desired dist
+    protected virtual void Update() 
     {
+        //ToDo: If we get knocked away from the swarm center, move back towards it - define a desired dist
+
+        //If we end up too far away, or we aren't fueled, deactivate our effect / benefit, and wait for the player to come pick us back up?
         //ToDo: Stop if not fueled?
         //transform.RotateAround(SwarmManager.Instance.transform.position, Vector3.forward, angle);
         //transform.localPosition = new Vector3(Mathf.Cos(Time.fixedDeltaTime * speed) * magnitude, Mathf.Sin(Time.fixedDeltaTime * speed) * magnitude, 0);

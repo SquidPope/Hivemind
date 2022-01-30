@@ -4,16 +4,22 @@ public class VisionBee : Bee
 {
     // Bee that lets the player see farther in the level
 
-    [SerializeField] GameObject darkOverlay;
+    GameObject darkOverlay;
 
-    void Start()
+    public override void Init(int id)
     {
-        darkOverlay.SetActive(false); //ToDo: set this to true and use fueling it as tutorial for fueling bees???
+        this.id = id;
+        type = BeeType.Vision;
+        description = "Vision bees allow the swarm to see the area around them. More fuel lets them see farther.";
+        darkOverlay = GameObject.FindGameObjectWithTag("DarkOverlay");
     }
 
-    public override void ChangeFuelLevel(float amount)
+    public override void ChangeFuelLevel(int amount)
     {
         base.ChangeFuelLevel(amount);
+
+        if (darkOverlay == null)
+            darkOverlay = GameObject.FindGameObjectWithTag("DarkOverlay");
 
         darkOverlay.SetActive(!isFueled);
     }

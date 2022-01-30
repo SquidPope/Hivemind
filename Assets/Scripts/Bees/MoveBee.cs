@@ -8,8 +8,11 @@ public class MoveBee : Bee
     Camera mainCam;
     float moveSpeed = 5f;
 
-    void Start()
+    public override void Init(int id)
     {
+        this.id = id;
+        type = BeeType.Move;
+        description = "Movement bees allow the swarm to fly around. More fuel lets them move faster!"; //ToDo: Actually implement different speeds
         mainCam = Camera.main;
         swarm = SwarmManager.Instance;
     }
