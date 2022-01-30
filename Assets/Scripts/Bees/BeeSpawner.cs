@@ -41,7 +41,7 @@ public class BeeSpawner : MonoBehaviour
         if (isTriggered)
         {
             //check for button press, activate bee
-            if (Input.GetKeyUp(KeyCode.E))
+            if (Input.GetMouseButtonUp(1)) //ToDo: Everything else in the game is on mouse, this should be too (somehow)
             {
                 bool repaired = SwarmManager.Instance.RepairBee(id, type);
 

@@ -50,4 +50,9 @@ public class BeeFuelUI : MonoBehaviour
     {
         beeListPanel.SetActive(!beeListPanel.activeSelf);
     }
+
+    public void MainMenuPressed()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("MainMenu");
+    }
 }

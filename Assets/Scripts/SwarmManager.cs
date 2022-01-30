@@ -99,6 +99,50 @@ public class SwarmManager : MonoBehaviour
         BeeFuelUI.Instance.UpdateBeeDisplay(bee.Id);
     }
 
+    public int SpendFuel(int cost)
+    {
+        int fuelInStorage = 0;
+        foreach (Bee b in storageBees)
+        {
+            fuelInStorage += b.GetFuelCurrent();
+
+            if (fuelInStorage >= cost)
+            {
+                //remove fuel from storage bee (make sure each storage bee is left with at least one!)
+                int subtractedFuel = 0;
+                for (int i = 0; i > storageBees.Count; i++)
+                {
+                    //get storage bee fuel total
+                    //if it's <= cost, take all of it and subtract from cost
+                    //if it's > cost, take that much and return cost
+
+                    int fuel = storageBees[i].GetFuelCurrent(); //Get how much spare fuel this storage bee has.
+                    int remainingCost = cost - subtractedFuel;
+
+                    if (fuel > remainingCost) //Check if the spare fuel covers the cost of the new bee, if so just subtract that much.
+                    {
+                        storageBees[i].ChangeFuelLevel(-(remainingCost));
+                        subtractedFuel += remainingCost;
+                    }
+                    else
+                    {
+                        storageBees[i].ChangeFuelLevel(fuel);
+                        subtractedFuel += fuel;
+                    }
+                
+                    if (subtractedFuel == cost)
+                    {
+                        return subtractedFuel;
+                    }
+                }
+
+                return cost;
+            }
+        }
+
+        return fuelInStorage;
+    }
+
     public bool RepairBee(int id, BeeType type)
     {
         //get fuel in storage
@@ -107,7 +151,7 @@ public class SwarmManager : MonoBehaviour
         foreach (Bee b in storageBees)
         {
             fuelInStorage += b.GetFuelCurrent();
-            if (fuelInStorage >= cost + storageBees.Count) //Don't let the player spend ALL the storage bee's fuel, it needs one to stay active!
+            if (fuelInStorage >= cost)
             {
                 //activate/spawn the bee
                 if (id >= 0)
@@ -126,20 +170,16 @@ public class SwarmManager : MonoBehaviour
                 {
                     int fuel = storageBees[i].GetFuelCurrent(); //Get how much spare fuel this storage bee has.
                     int remainingCost = cost - subtractedFuel;
-                    if (fuel == 1)
-                    {
-                        //Skip this bee if it only has 1 fuel.
-                        continue;
-                    }
-                    else if (fuel > remainingCost) //Check if the spare fuel covers the cost of the new bee, if so just subtract that much.
+
+                    if (fuel > remainingCost) //Check if the spare fuel covers the cost of the new bee, if so just subtract that much.
                     {
                         storageBees[i].ChangeFuelLevel(-(remainingCost));
                         subtractedFuel += remainingCost;
                     }
                     else
                     {
-                        storageBees[i].ChangeFuelLevel(fuel - 1); //Leave the bee with one fuel so it doesn't deactivate.
-                        subtractedFuel += fuel - 1;
+                        storageBees[i].ChangeFuelLevel(fuel);
+                        subtractedFuel += fuel;
                     }
                 
                     if (subtractedFuel == cost)
@@ -150,6 +190,7 @@ public class SwarmManager : MonoBehaviour
             }
         }
 
+        Debug.Log($"{fuelInStorage} < {cost}");
         return false; //The player couldn't afford to spawn the bee, do red text or something to tell them that
     }
 
