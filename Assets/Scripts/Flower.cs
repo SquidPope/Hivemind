@@ -6,10 +6,14 @@ public class Flower : MonoBehaviour
     [SerializeField] int fuelAmount = 1;
     new SpriteRenderer renderer;
 
-    float timer;
-    float timerMax = 4f;
+    float gatherTimer = 0f;
+    float gatherTimerMax = 2f;
+
+    float respawnTimer = 0f;
+    float respawnTimerMax = 8f;
 
     int gathererId = -1;
+    bool isRespawning = false;
 
     Color currentColor;
 
@@ -23,24 +27,36 @@ public class Flower : MonoBehaviour
     public void StopGathering() 
     {
         gathererId = -1;
-        timer = 0f;
+        gatherTimer = 0f;
         currentColor.a = 1f;
-        
+
         if (renderer != null)
             renderer.color = currentColor;
     }
 
     void Update()
     {
-        if (gathererId >= 0)
+        if (!isRespawning && gathererId >= 0)
         {
-            timer += Time.deltaTime;
-            currentColor.a -= 0.0003f;
+            gatherTimer += Time.deltaTime;
+            currentColor.a -= 0.003f;
             renderer.color = currentColor;
-            if (timer >= timerMax)
+            if (gatherTimer >= gatherTimerMax)
             {
                 SwarmManager.Instance.ChangeFuel(gathererId, fuelAmount); //ToDo: A little particle with the number of fuel gained would be nifty
-                GameObject.Destroy(gameObject); //ToDo: Deactivate for a period instead?
+                renderer.enabled = false;
+                isRespawning = true;
+            }
+        }
+        else if (isRespawning)
+        {
+            respawnTimer += Time.deltaTime;
+
+            if (respawnTimer >= respawnTimerMax)
+            {
+                respawnTimer = 0f;
+                isRespawning = false;
+                renderer.enabled = true;
             }
         }
     }

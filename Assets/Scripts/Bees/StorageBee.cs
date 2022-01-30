@@ -7,6 +7,7 @@ public class StorageBee : Bee
     {
         this.id = id;
         type = BeeType.Storage;
+        desiredDist *= 3f;
         description = "Storage Bees can carry a lot of fuel.";
     }
 }

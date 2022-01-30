@@ -10,7 +10,7 @@ public class SwarmManager : MonoBehaviour
     List<Bee> storageBees;
 
     //ToDo: Consider making additional storage bees progressively more expensive?
-    public static readonly int[] beeCosts = {8, 9, 5, 2, 4, 9, 4}; //Currently set to one more than the bee type's max, although it's effectively equal to max because all bees start with one fuel.
+    public static readonly int[] beeCosts = {6, 7, 3, 2, 4, 9, 1}; //Currently set to one more than the bee type's max, although it's effectively equal to max because all bees start with one fuel.
 
     int totalFuelMax = 0; //Total fuel we can carry before we need to spend or drop off some - increased by getting more bees, especially storage bees
     int totalFuelCurrent = 0; //How much fuel we have on hand right now - increased by gathering
@@ -41,8 +41,6 @@ public class SwarmManager : MonoBehaviour
         CreateBee(BeeType.Move);
         CreateBee(BeeType.Storage);
         CreateBee(BeeType.Vision);
-
-        //ChangeFuel(3, bees[3].GetFuelMax()); //Fill the vision bee completely, so the player can see clearly from the start
     }
 
     public void ChangeFuel(int id, int amount)
@@ -157,7 +155,6 @@ public class SwarmManager : MonoBehaviour
 
     public void CreateBee(BeeType type)
     {
-        Debug.Log($"Creating {type}");
         Bee newBee = GameObject.Instantiate(beefabs[(int)type], transform.position, Quaternion.identity).GetComponent<Bee>();
         newBee.Init(bees.Count);
         bees.Add(newBee);

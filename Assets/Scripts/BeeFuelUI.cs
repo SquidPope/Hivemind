@@ -6,6 +6,7 @@ public class BeeFuelUI : MonoBehaviour
 {
     // Script to control the BeeHUD
     [SerializeField] Text totalFuelDisplay;
+    [SerializeField] GameObject beeListPanel;
     [SerializeField] GameObject beeButtonScrollView;
     [SerializeField] GameObject buttonBeefab;
     
@@ -42,7 +43,11 @@ public class BeeFuelUI : MonoBehaviour
 
     public void UpdateBeeDisplay(int beeId)
     {
-        Debug.Log($"updating display for {beeId}");
         beeButtons.Find(x => x.GetId() == beeId).UpdateDisplay();
+    }
+
+    public void ToggleBeeList()
+    {
+        beeListPanel.SetActive(!beeListPanel.activeSelf);
     }
 }

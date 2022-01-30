@@ -28,7 +28,7 @@ public class BeeButton : MonoBehaviour
         icon.sprite = beeSprites[(int)type];
 
         //Iterate through the extra honeycomb images, turning them off.
-        for (int i = bee.GetFuelMax() - 1; i < honeycombIcons.Count; i++)
+        for (int i = bee.GetFuelMax(); i < honeycombIcons.Count; i++)
         {
             honeycombIcons[i].gameObject.SetActive(false);
         }
@@ -59,12 +59,12 @@ public class BeeButton : MonoBehaviour
 
         if (type != BeeType.Storage)
         {
-            if (bee.GetFuelCurrent() > 1)
+            if (bee.GetFuelCurrent() > 0) //Let the player disable bees if they want - this shouldn't "kill" them though!
                 decreaseButton.interactable = true;
             else
                 decreaseButton.interactable = false;
 
-            if (bee.GetFuelCurrent() < bee.GetFuelMax() - 1)
+            if (bee.GetFuelCurrent() < bee.GetFuelMax())
                 increaseButton.interactable = true;
             else
                 increaseButton.interactable = false;

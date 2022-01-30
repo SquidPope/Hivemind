@@ -10,12 +10,12 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         if (lifespan <= 0f)
-            lifespan = 5f;
+            lifespan = 2f;
 
         //Point at the mouse cursor and then launch.
         rigid = gameObject.GetComponent<Rigidbody2D>();
         transform.LookAt(Camera.main.ScreenToWorldPoint(Input.mousePosition)); //Make sure we only rotate on the z axis!
-        rigid.AddForce(50f * (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+        rigid.AddForce(50f * (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position));
     }
 
     void OnCollisionEnter(Collision other)

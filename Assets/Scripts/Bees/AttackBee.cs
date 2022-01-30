@@ -8,12 +8,13 @@ public class AttackBee : Bee
     [SerializeField] GameObject projectilePrefab;
 
     float timer = 0f;
-    float timerMax = 2f;
+    float timerMax = 0.25f;
 
     public override void Init(int id)
     {
         this.id = id;
         type = BeeType.Attack;
+        desiredDist *= 3f;
         description = "Attack bees can fire projectiles at opponents and obstacles.";
         timer = timerMax;
     }
@@ -29,7 +30,7 @@ public class AttackBee : Bee
     {
         base.Update();
 
-        if (Input.GetMouseButton(1))
+        if (isFueled && Input.GetMouseButton(1))
         {
             timer += Time.deltaTime;
 

@@ -10,6 +10,7 @@ public class VisionBee : Bee
     {
         this.id = id;
         type = BeeType.Vision;
+        desiredDist *= 3f;
         description = "Vision bees allow the swarm to see the area around them. More fuel lets them see farther.";
         darkOverlay = GameObject.FindGameObjectWithTag("DarkOverlay");
     }
